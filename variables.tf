@@ -52,7 +52,7 @@ variable "policy_arns" {
 variable "policy_arns_count" {
   default     = 0
   description = "The number of policy arns to attach."
-  type        = string
+  type        = number
 }
 
 variable "root_block_device" {

@@ -80,6 +80,6 @@ locals {
     "x1e.16xlarge",
     "x1e.32xlarge",
   ]
-  policy_arns_count = var.policy_arns_count
+  policy_arns_count = length(var.policy_arns)
 }
 

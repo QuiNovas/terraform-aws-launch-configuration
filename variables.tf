@@ -1,19 +1,30 @@
 variable "associate_public_ip_address" {
   default     = false
   description = "Associate a public ip address with an instance in a VPC."
-  type        = string
+  type        = bool
 }
 
-variable "ebs_block_devices" {
+variable "ebs_block_device" {
   default     = []
   description = "Additional EBS block devices to attach to the instance."
-  type        = list(string)
+  type        = list(object({
+      delete_on_termination = bool
+      device_name           = string
+      encrypted             = bool
+      iops                  = string
+      snapshot_id           = string
+      volume_size           = number
+      volume_type           = string
+      }))
 }
 
-variable "ephemeral_block_devices" {
+variable "ephemeral_block_device" {
   default     = []
   description = "Customize Ephemeral (also known as \"Instance Store\") volumes on the instance."
-  type        = list(string)
+   type        = list(object({
+      device_name       = string
+      virtual_name      = string
+      }))
 }
 
 variable "image_id" {
@@ -49,16 +60,20 @@ variable "policy_arns" {
   type        = list(string)
 }
 
-variable "policy_arns_count" {
-  default     = 0
-  description = "The number of policy arns to attach."
-  type        = number
-}
-
 variable "root_block_device" {
-  default     = {}
+  default     = {
+      delete_on_termination = true
+      iops                  = null
+      volume_size           = null
+      volume_type           = null
+  }
   description = "Customize details about the root block device of the instance."
-  type        = map(string)
+  type        = object({
+      delete_on_termination = bool
+      iops                  = string
+      volume_size           = number
+      volume_type           = string
+      })
 }
 
 variable "security_groups" {
@@ -68,7 +83,7 @@ variable "security_groups" {
 }
 
 variable "user_data" {
-  default     = ""
+  default     = " "
   description = "The user data to provide when launching the instance. Do not pass gzip-compressed data via this argument."
   type        = string
 }
